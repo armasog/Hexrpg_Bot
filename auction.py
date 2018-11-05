@@ -4,19 +4,10 @@ import time
 from random import randint
 import re; re._pattern_type = re.Pattern  # Workaround for a bug in robobrowser and Python 3.7
 import numpy as np
+from config import *
 
 browser = RoboBrowser(history=True)
 pd.set_option("display.max_columns", 101)
-
-# Step 1: Enter Log In Details
-user = 'enter your username'
-password = 'enter your password'
-
-# Step 2: Set fair price algorithm parameters
-years = [18]  # Years of price history to consider. Entered as two digit integer format i.e 2018 is entered as 18
-months = ['Sep', 'Oct', 'Nov']  # Months of price history to consider. Entered in 3 letter format
-
-#Step 3: Run!
 
 def log_in():
     global browser, user, password
@@ -113,19 +104,18 @@ def open_auctions():
         item_prices[i] = clean_price
 
     open_auctions = dict(zip(item_names, item_prices))
-    print(open_auctions)
     return open_auctions
 
 
 def identify_opportunities(open_auctions):
-    global years, months
+    global years, months, minimum, maximum
     for item in open_auctions:
         clean_item = item[:-6]  # Removes 6 random digits from item keys used to handle duplicates
         item_no_spaces = clean_item.replace(' ', '+')  # URL convention
         try:
             fair = fair_price(item_no_spaces, months, years)
             current = int(open_auctions[item])
-            if current < fair[0]:
+            if fair[0] > current >= minimum and current <= maximum:
                 current_actual = current_bid(clean_item)  # Accounts for min increment
                 print('{} \nCurrent Price: {} \nFair Price: {} \nStd: {} \nSample Size {}'.format(clean_item,
                                                                                                   current_actual,
