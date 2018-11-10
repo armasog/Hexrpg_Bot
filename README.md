@@ -4,3 +4,6 @@ This module reads the 20 auction listings closing the soonest and uses past data
 
 Gambling:
 This module will automatically execute a programmatic betting strategy in the Roulette-inspired Runic Aleatorem game for a set number of iterations and export the profit/loss of each bet to a CSV. 
+
+Buyer:
+This module will automatically buy a given quantity of any item from a store in Diagon Alley or Hogsmeade (assuming it is in stock). 
